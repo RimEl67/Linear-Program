@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Méthode Simplexe</title>
+</head>
+<body>
+
+<style>
+    
+
+html{
+    background-color: rgb(255, 255, 255);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "Montserrat", sans-serif;
+    color: #a74943;
+    font-weight: bolder;
+}
+
+
+
+
+header{
+    background:  rgb(105, 105, 105);
+    color: #F5F1EE;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 101%;
+    height: 130px;
+
+    box-shadow: 0px 2px 10px rgba(26, 26, 26, 0.45);
+}
+
+
+.entete{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+
+img{
+    position: relative;
+    align-self: center;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+
+.titre{
+    position: relative;
+    align-self: center;
+
+    line-height: 0px;
+}
+.titre h1{
+    font-size: xx-large;
+
+    margin-left: 10px;
+    padding-left: -20px;
+    padding-right: 70px;
+    padding-bottom: 14px;
+
+    border-bottom: solid;
+}
+.titre p{
+    font-size: medium;
+
+    margin-left: 10px;
+    margin-top: -4.6px;
+}
+
+
+.credit{
+    position: fixed;
+
+    top: 15px;
+    right: 20px;
+
+    font-style: italic;
+    font-size: small;
+    font-weight: 400;
+    line-height: 5px;
+}
+
+.nota{
+    position:relative;
+    top: 75%;
+    width: 700px;
+    padding-left: 20%;
+    text-align: end;
+    font-style: italic;
+    font-size: small;
+    font-weight: 400;
+    line-height: 5px;
+}
+
+
+
+.page{
+    display: flex;
+    column-gap: 50px;
+    align-content: space-between;
+}
+
+
+.formulaire{ 
+    display: flex;
+
+    height: 100%;
+    width: 100%;
+
+    flex-direction: row;
+}
+
+
+body{
+    margin-top: 0.5cm;
+    min-width: 20cm;
+    position: relative;
+    top: 5cm;
+    margin-left: 45px;
+    margin-right: 0.7cm;
+}
+
+
+fieldset{ /* Diviseur de chaque champ du formulaire */
+    min-width: 750px;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 1cm;
+    border-radius: 20px;
+}
+
+
+legend{ /* --> /* Titre du champ diviseur du formulaire */
+    font-size: medium;
+}
+
+
+form input{
+    width: 25px;
+    height: max-content;
+    color: rgb(105, 105, 105);
+    background-color: ghostwhite;
+    border: 0px;
+    border-radius: 8px;
+}
+
+
+
+
+.coeficient::-webkit-inner-spin-button, .resultat::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+  }
+
+.buttoncalculer{
+    cursor: pointer;
+    height: 1cm;
+    width: 150px;
+    border: none;
+    border-radius: 10px;
+    background:   #ECC1A1;
+    color: #58626C;
+    font-size: 1.1rem;
+    transition: all .2s ease-in-out;
+}
+.buttoncalculer:hover{
+    background:  #f6ceb0;
+}
+
+
+.coeficient{ 
+    width: 70px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
+    border-color: rgb(122, 122, 122);
+    background-color: transparent;
+}
+
+.coeficient:focus{
+    outline: none !important;
+    width: 70px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
+    border-color:#ECC1A1;
+    background-color: transparent;
+}
+
+
+.numVariable{ 
+    padding-left: 10px;
+    margin-left: 10px;
+    width: 65px;
+    border: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
+    border-color: rgb(97, 97, 97);
+    background-color: transparent;
+}
+
+.numVariable::-webkit-inner-spin-button {
+    opacity: 1 !important;
+}
+
+
+.numVariable:focus{
+    outline: none !important;
+    border-color:#ECC1A1;
+}
+
+.ChampContrainte{ 
+    height: max-content !important;
+    padding-left: 20px;
+}
+
+
+.resultat{ 
+    margin-bottom: 20px;
+    width: 90px;
+    margin-left: 10px;
+    margin-right: 5px;
+    border: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
+    border-color: #a74943;
+    background-color: transparent;
+}
+
+.resultat:focus{
+    outline: none !important;
+    margin-bottom: 20px;
+    width: 90px;
+    margin-left: 10px;
+    margin-right: 5px;
+    border: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
+    border-color: #ECC1A1;
+    background-color: transparent;
+}
+
+
+.signeEq, .minMax{ 
+    border-color: rgb(184, 182, 182);
+    background-color: ghostwhite;
+    color: rgb(97, 97, 97);
+}
+
+.signeEq{
+    margin-left: 5px;
+    border-top: 0;
+    border-left: 0;
+    border-bottom: 0;
+    border-width: 0;
+}
+
+
+ .minMax{ 
+    margin-left: 10px;
+    margin-right: 20px;
+    border-top: 0;
+    border-left: 0;
+    border-bottom: 0;
+    border-right: 0;
+    font-weight: bold;
+} 
+
+.add, .rem{
+    border: solid;
+    border-width: 2px;
+    border-radius: 3px;
+    background-color: transparent;
+    border-color: rgb(97, 97, 97);
+    color:rgb(97, 97, 97);
+}
+
+.add:hover, .add:active{
+    border-width: 2px;
+    border-radius: 3px;
+    background-color: transparent;
+    color:green;
+    border-color: green;
+}
+
+.rem:hover, .rem:active{
+    color:firebrick;
+    border-color: firebrick;
+}
+
+.resultatSimplex{ 
+    margin-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 20px;
+    height: 100%;
+    width: 60%;
+    background-color: #ECC1A1;
+    white-space: nowrap;
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.211);
+    text-overflow: ellipsis;
+}
+
+.buttonRefresh{
+    cursor: pointer;
+    height: 1cm;
+    width: 150px;
+    margin-right: 30px;
+    border: none;
+    border-radius: 10px;
+    background:   ghostwhite;
+    color: #58626C;
+    font-size: 1.1rem;
+    transition: all .2s ease-in-out;
+    margin-left: 70%;
+    margin-bottom: 30px;
+}
+.buttonRefresh:hover{
+    background:rgb(242, 244, 244);
+}
+
+h2{
+    text-decoration: underline;
+}
+
+</style>
+
+    <header>
+        <div class="entete">
+            <img src="Logo.png" width="100px" alt="Foto entete">
+
+            <div class="titre">
+                <h1>La Méthode Simplexe</h1>
+                <p class="subTitulo">Application informatique pour la résolution d'un programme linéaire</p>
+            </div>
+
+            <div class="credit">
+                <p>Réalisé par:</p>
+                <p>Rim EL ABBASSI </p>
+                <p>Brahim EL MAJDAOUI  </p>
+
+            </div>
+
+            
+        </div>
+    </header>
+
+
+
+    <div class="page">
+
+        <div class="formulaire">
+            <form action="" id="formName">
+
+                <!-- I. Nombre de Variables -->
+                <fieldset id="ChampNumVar">
+                    <legend> Nombre de variables (2 - 5) </legend>
+
+                    <input type="number" class="numVariable" id="numVariable" min="2" max="5" value="2" required>
+                </fieldset>
+
+
+                <!-- II. Fonction Objectif -->
+                <fieldset id="ChampFuncObj">
+                    <legend> Fonction Objection Z </legend>
+
+                    <div id="fonctionObjectif">
+                            <!-- Fonction Objectif généré dynamiquement par JavaScript -->
+                    </div>
+                </fieldset>
+
+
+                <!-- III. Contraintes -->
+                <fieldset class="ChampContrainte" id="ChampContrainte">
+                    <legend> Contraintes</legend>
+
+                    <div id="contrainte">
+                    </div>
+
+                    <br><br>
+                    <button type="button" class="add" onclick="ajouterContrainte()">Ajouter une contrainte</button><br><br>
+                    <button type="button" class="rem" onclick="removeContrainte()">Supprimer dernière Contrainte</button><br><br>
+                </fieldset>
+
+                <input type="submit" class="buttoncalculer" onclick="validChamps()" id="button" value="Calculer">
+            </form>
+        </div>
+
+
+
+        <!-- 2. resultat Du simplexe --------------------------------------------------------------------------------- -->
+        <div class="resultatSimplex" id="resultatSimplex" hidden>
+            
+            <!-- button pour Nouveau simplexe-->
+        </div>
+        
+    </div>
+    
+
+
+    <script>
+        
+
+        let flagScroll=0;
+function pageScroll() {
+    window.scrollBy(0,-4);
+    flagScroll++;
+    if(flagScroll<20) scrolldelay = setTimeout(pageScroll, 5);
+    return;
+}
+
+
+
+// 1. CHANGEMENT DU NOMBRE DE Variables =======================================================================================
+var numContrainte=2;
+var numVariable=2;
+let matriceStandard = [];
+let matriceOperation = [];
+let vetorBase = [];
+
+
+document.getElementById('numVariable').addEventListener('change', atualizaChamps);
+atualizaChamps();
+
+
+
+function atualizaChamps(){
+    document.getElementById('fonctionObjectif').innerHTML = ''; 
+    document.getElementById('contrainte').innerHTML = '';
+
+    numContrainte=0;
+
+    ajouterObjectif();
+    ajouterContrainte();
+    ajouterContrainte();
+}
+
+
+// 2. FONCTIONS DE DYNAMICITÉ =========================================================================================
+
+function ajouterObjectif(){
+    numVariable= parseInt(document.getElementById('numVariable').value) || 2;
+
+    // I. Minimizar ou Maximizar 
+        const minMax = document.createElement('select');
+        minMax.className = 'minMax';
+        minMax.id = 'minMax';
+        const opcs = ['Min.', 'Max.'];
+
+        for(let k = 0; k < 2; k++){
+            const opc = document.createElement('option');
+            opc.value = opcs[k];
+            opc.textContent = opcs[k];
+            minMax.appendChild(opc);
+            minMax.append('   ');
+        }
+        document.getElementById('fonctionObjectif').appendChild(minMax);
+
+
+    // II. coeficients, Variables de resultat
+        for(let i = 1; i <= numVariable; i++){
+            const input = document.createElement('input');
+            input.id = 'funcObj' + i;
+            input.type = 'number';
+            input.className = 'coeficient';
+            input.placeholder = `coef X${i}`;
+            input.required = true;
+            document.getElementById('fonctionObjectif').appendChild(input);
+
+            if(i < numVariable){
+                const span = document.createElement('span');
+                span.textContent = 'x' + i + '  +  ';
+                document.getElementById('fonctionObjectif').appendChild(span);
+            }
+        }
+}
+
+function removeContrainte(){
+    if(numContrainte>2){
+        const lastAddedDiv = document.getElementById('contrainte').lastElementChild;
+        if(lastAddedDiv){
+            lastAddedDiv.remove();
+            numContrainte--;
+        }
+    }
+}
+
+function ajouterContrainte(){
+    if(numContrainte<5){
+        const numVariable= parseInt(document.getElementById('numVariable').value) || 2;
+        const DivContrainte = document.createElement("div");
+        
+    
+        // I. coeficients des Variables
+            for(let i = 1; i <= numVariable; i++){
+                const input = document.createElement('input');
+                input.id = 'ContrainteVar' + i + (numContrainte+1); //i=colonne (xi), countContrainte=ligne
+                input.type = 'number';
+                input.className = 'coeficient';
+                input.placeholder = `coef X${i}`;
+                input.required = true;
+                DivContrainte.appendChild(input);
+    
+                if (i < numVariable){
+                    const span = document.createElement('span');
+                    span.textContent = 'x' + i + ' + ';
+                    DivContrainte.appendChild(span);
+                }
+    
+                else if(i==numVariable){
+                    const span = document.createElement('span');
+                    span.textContent = 'x' + i + ' ';
+                    DivContrainte.appendChild(span);
+                }
+            }
+    
+    
+        // II. sélection du type d'équation
+            const select = document.createElement('select');
+            select.className = 'signeEq';
+            select.id = 'signe' + (numContrainte+1);
+            const options = ['=', '≤', '≥'];
+    
+            for(let k = 0; k < options.length; k++){
+                const option = document.createElement('option');
+                option.value = options[k];
+                option.textContent = options[k];
+                select.appendChild(option);
+                select.append(' ');
+            }
+            DivContrainte.appendChild(select);
+    
+    
+        // III. resultat
+            const inputresultat = document.createElement('input');
+            inputresultat.id = 'ContrainteResult' + (numContrainte+1);
+            inputresultat.type = 'number';
+            inputresultat.className = 'resultat';
+            inputresultat.placeholder = 'Resultat';
+            inputresultat.required = true;
+            DivContrainte.appendChild(inputresultat);
+    
+    
+        document.getElementById("contrainte").appendChild(DivContrainte);
+        numContrainte++;
+    }
+}
+
+
+
+// 3. FONCTIONS POUR CONNAÎTRE LES VALEURS =========================================================================================
+
+const vetorObjectif = []; //Bool Min/Max - Coef. variables - resultat
+let matriceContrainte =[]; //Coef. variables - resultat - signe (*numContrainteições)
+
+function validChamps() {
+    event.preventDefault();
+
+    const numVariable= parseInt(document.getElementById('numVariable').value);
+    if (isNaN(numVariable) || numVariable< 2 || numVariable> 5) {
+        alert('Le nombre de variables doit être une valeur comprise entre 2 e 5.');
+        return false;
+    }
+
+    // Vérifiez que toutes les Fonction Objectif Champs sont renseignées
+    for (let i = 1; i <= numVariable; i++) {
+        const input = document.getElementById('funcObj' + i);
+        if (!input.value) {
+            alert('Remplissez tous les Champs de la fonction Objectif.');
+            return false;
+        }
+    }
+
+    // Vérifiez que tous les champs de contraintes sont renseignés
+    for (let i = 1; i <= numVariable; i++) {
+        for (let j = 1; j <= numContrainte; j++) {
+            const input = document.getElementById('ContrainteVar' + i + j);
+            if (!input.value) {
+                alert('Terminez toutes les Champs de contraintes.');
+                return false;
+            }
+        }
+    }
+
+    // Vérifiez que tous les résultats de Contraintes Champs sont renseignés
+    for (let i = 1; i <= numContrainte; i++) {
+        const inputresultat = document.getElementById('ContrainteResult' + i);
+        if (!inputresultat.value) {
+            alert('Complétez tous les résultats des Champs de contraintes.');
+            return false;
+        }
+    }
+
+    // Si tous les Champs sont remplis, appelez la Fonction saveValue
+    saveValue();
+    return false;
+}
+
+
+
+function saveValue(){
+    //3.1 - Fonction Objectif ---------------------------------------------------------------
+    const numVariable= parseInt(document.getElementById('numVariable').value);
+    
+    //I. Maximizer ou Minimizer
+    if(document.getElementById('minMax').value === "Min.")
+        vetorObjectif.push(0); //0 pour minimizer
+    else
+        vetorObjectif.push(1); //1 pour maximizer
+    
+
+    //II. coeficients Objectif
+    for(let i = 1; i <= numVariable; i++){
+        let Value = parseInt(document.getElementById('funcObj'+i).value);
+        vetorObjectif.push(Value);
+    }
+
+
+    //3.2 - Contraintes --------------------------------------------------------------------
+    for(let i=0; i<numContrainte; i++){ //matrice contrainte
+        matriceContrainte[i]=new Array(numVariable+2);
+    }
+
+    for(let i = 1; i <=numContrainte; i++){ //Colonnes coeficients
+        for(let j=1; j<=numVariable; j++){
+            let Value = parseInt(document.getElementById('ContrainteVar'+j+i).value);
+            matriceContrainte[i-1][j-1]=Value;
+        }
+    }
+
+    for(let i=1; i<=numContrainte; i++){ //Colonnes resultats
+        let Value = parseInt(document.getElementById('ContrainteResult'+i).value);
+        matriceContrainte[i-1][numVariable]=Value;
+
+        var signe; //Colonne Signe
+        if(document.getElementById('signe'+i).value === "=")
+            signe=0;
+        else if(document.getElementById('signe'+i).value === "≥")
+            signe=1;
+        else
+            signe=-1;
+    
+        matriceContrainte[i-1][numVariable+1]=signe;
+    }
+
+    criamatriceFormeStandard();
+    console.log("\nCalculateur simplex...")
+    let resultatSimplex=0;
+    let count=0;
+    while(resultatSimplex===0 && count <20){
+        count++;
+
+        if(count===21) console.log("Simplex impossible (pas de solution)");
+
+        else{
+            resultatSimplex=pivoter();
+            console.log("Simplex - Itération" + count);
+            for(let ligne=0; ligne<numContrainte+2; ligne++){
+                var array=[];
+                for(let colonne=0; colonne<numVariable+(numContrainte*2)+2; colonne++){
+                    array[colonne]=matriceOperation[ligne][colonne];
+                }
+                var str=array.join(' ');
+                console.log(str);
+            }
+            console.log("\n");
+        }
+    }
+
+    let resultat = matriceStandard[numContrainte+1][numVariable+(2*numContrainte)+1];
+    const divresultat = document.createElement("div");
+    const span = document.createElement('h2');
+    const button = document.createElement('button');
+
+    if(resultatSimplex===-1){
+        console.log("Erreur de Simplex");
+        span.textContent = "Erreur de Simplex";
+        divresultat.appendChild(span);
+    }
+    else if(resultatSimplex===2){
+        console.log("Simplex impossible(sans solution)");
+        span.textContent = "Simplex impossible(sans solution)";
+        divresultat.appendChild(span);
+    }
+    else if(resultatSimplex===3){
+        console.log("solution infini");
+        span.textContent = "solution infini";
+        divresultat.appendChild(span);
+    }
+    else if(resultatSimplex===4){
+        console.log("plusieurs solutions");
+        span.textContent = "plusieurs solutions";
+        divresultat.appendChild(span);
+
+        const ValueZ = document.createElement('p');
+        ValueZ.textContent = "Z = " + resultat.toFixed(4);
+        divresultat.appendChild(ValueZ);
+    }
+    else if(resultatSimplex===1){
+        console.log("Simplex com solution unica!");
+        imprimeSimplex();
+    }
+
+    document.getElementById("resultatSimplex").appendChild(divresultat);
+
+    button.className = "buttonRefresh";
+    button.append("Nouveau simplexe");
+    button.setAttribute("onclick","refreshPage()");
+    document.getElementById("resultatSimplex").appendChild(button);
+
+    document.getElementById("resultatSimplex").hidden=false;
+
+    pageScroll();
+    flagScroll=0;
+}
+
+
+
+//4. FORME STANDARD========================================================================================================================
+
+function criamatriceFormeStandard(){
+    //I. Remplir la matrice standard
+    for(let ligne=0; ligne<numContrainte+2; ligne++){ //num lignes -> num Contrainte + func. obj + CRs
+        matriceStandard[ligne]=new Array(numVariable+(2*numContrainte)+2); //num colonnes -> bases + num variables + variables auxiliares + resultat
+    }
+    
+    for(let ligne=0; ligne<numContrainte+2; ligne++){
+        for(let colonne=0; colonne<numVariable+(numContrainte*2)+2; colonne++){
+            matriceStandard[ligne][colonne]=0;
+        }
+    }
+    //ligne 0 - Fonction Objectif
+    for(let colonne=1; colonne<=numVariable; colonne++){ //Variables normales
+        if(vetorObjectif[0]===1)
+            matriceStandard[0][colonne]=vetorObjectif[colonne]*-1;
+        else
+            matriceStandard[0][colonne]=vetorObjectif[colonne];
+    }
+
+    let Contrainte=0;
+    for(let colonne=numVariable+1; colonne<numVariable+(numContrainte*2)+1; colonne++){ 
+        if(matriceContrainte[Contrainte][numVariable+1]===-1){ //Si la contrainte for <=
+            matriceStandard[0][colonne]=0;
+            colonne++;
+            matriceStandard[0][colonne]=0;
+        }
+        else if(matriceContrainte[Contrainte][numVariable+1]===0 || matriceContrainte[Contrainte][numVariable+1]===1){ //Se a Contrainteição for === ou >=
+            matriceStandard[0][colonne]=0;
+            colonne++;
+            matriceStandard[0][colonne]=10000;
+        }
+        Contrainte++;
+    }
+    
+
+    //ligne 2 à i-1 - Contraintes
+    for(let ligne=1; ligne<numContrainte+1; ligne++){
+        for(let colonne=0; colonne<numVariable+(numContrainte*2)+1; colonne++){
+            if(colonne==0){ //colonne 0 - Valuees das bases na f.obj.
+                if(matriceContrainte[ligne-1][numVariable+1]==-1){ //Si la Contrainte for <=
+                    matriceStandard[ligne][0]=matriceStandard[0][numVariable+2*ligne-1];
+                    vetorBase[ligne]=numVariable+2*ligne-1;
+                }
+                else matriceStandard[ligne][0]=matriceStandard[0][numVariable+2*ligne];
+            }
+
+            else if(colonne==numVariable+2*ligne-1 || colonne==numVariable+2*ligne){ 
+                if(matriceContrainte[ligne-1][numVariable+1]==-1){
+                    matriceStandard[ligne][numVariable+2*ligne-1]=+1;
+                    matriceStandard[ligne][numVariable+2*ligne]=0;
+                }
+                else if(matriceContrainte[ligne-1][numVariable+1]==0){
+                    matriceStandard[ligne][numVariable+2*ligne-1]=0;
+                    matriceStandard[ligne][numVariable+2*ligne]=+1;
+                }
+                else{
+                    matriceStandard[ligne][numVariable+2*ligne-1]=-1;
+                    matriceStandard[ligne][numVariable+2*ligne]=+1;
+                }
+            }
+
+            else if(colonne>0 && colonne<=numVariable){ //colonnes var. normale
+                matriceStandard[ligne][colonne]=matriceContrainte[ligne-1][colonne-1];
+            }
+        }
+    }
+
+    //III. colonne resultat
+    for(let i=0; i<numContrainte; i++){
+        matriceStandard[i+1][numVariable+(2*numContrainte)+1]=matriceContrainte[i][numVariable];
+    }
+
+    //IV. ligne Coût réduit (CR)
+    for(let colonne=1; colonne<numVariable+(numContrainte*2)+1; colonne++){
+        let CRcolonne=matriceStandard[0][colonne];
+        for(let i=1; i<numContrainte+1; i++){
+            CRcolonne-=(matriceStandard[i][colonne]*matriceStandard[i][0]);
+        }
+        matriceStandard[numContrainte+1][colonne]=CRcolonne;
+    }
+
+    //Imprimer matrice simplex
+    console.log("matrice avant le simplexe:")
+    for(let ligne=0; ligne<numContrainte+2; ligne++){
+        var array=[];
+        for(let colonne=0; colonne<numVariable+(numContrainte*2)+2; colonne++){
+            array[colonne]=matriceStandard[ligne][colonne];
+        }
+        var str=array.join(' ');
+        console.log(str);
+    }
+
+    //Crée une matrice d'opération (miroir du standard)
+    for(let ligne=0; ligne<numContrainte+2; ligne++){ //num lignes -> num Contrainte + func. obj + CRs
+        matriceOperation[ligne]=new Array(numVariable+(2*numContrainte)+2); //num colonnes -> bases + num variables + variables auxiliares + resultat
+    }
+    
+    for(let ligne=0; ligne<numContrainte+2; ligne++){
+        for(let colonne=0; colonne<numVariable+(numContrainte*2)+2; colonne++){
+            matriceOperation[ligne][colonne]=matriceStandard[ligne][colonne];
+        }
+    }
+}
+
+
+//5. METHODE SIMPLEX ========================================================================================================================
+
+//I. Pivotant
+function pivoter(){
+    /* Cas possibles :
+         Retour -1 | ERREUR
+         Retour 0 | Simplex n'est pas terminé
+         Retour 1 | Solution unique trouvée
+         Retour 2 | Il n'y a pas de solution
+         Retour 3 | Solution illimitée/infinie
+         Retour 4 | Plusieurs solutions
+     */
+
+    let colonneresultat;
+    let mineurNegatif;
+    let flagPositivo=0;
+    let flagExcesso=0;
+    let pivo=0;
+    let colonnePivo = 1;
+    let lignePivo = 1;
+
+
+// Vérifie la plus petite valeur négative de la ligne COÛT RÉDUIT
+    mineurNegatif=matriceStandard[numContrainte+1][1]
+    for(let j=2; j<numVariable+(numContrainte*2)+1; j++){
+        if(matriceStandard[numContrainte+1][j]<mineurNegatif){
+            mineurNegatif = matriceStandard[numContrainte+1][j];
+            colonnePivo = j;
+        }
+    }
+    console.log("\ncolonne Pivo = " + colonnePivo);
+
+    //Vérifie s'il reste encore une variable d'excès dans la base
+    for(let i=1; i<numContrainte+1; i++){
+        if(matriceStandard[i][0]===10000) flagExcesso=1;
+    }
+
+    //Si les CRs sont supérieurs ou égaux à zéro (condition d'arrêt)
+    if(mineurNegatif>0){
+        return 1; //CAS 1: SOLUTION UNIQUE
+    }
+
+    //Divise la valeur de la colonne [résultat] par la valeur de la colonne [plus petit négatif] - pour trouver le pivot
+    colonneresultat=numVariable+(2*numContrainte)+1;
+    let menorPivo=99999999;
+    for(let i=1; i<numContrainte+1; i++){
+        if(matriceStandard[i][colonnePivo]!==0){
+            if((matriceStandard[i][colonneresultat]/matriceStandard[i][colonnePivo])>=0){
+                if(menorPivo>matriceStandard[i][colonneresultat]/matriceStandard[i][colonnePivo]){
+                    menorPivo = matriceStandard[i][colonneresultat]/matriceStandard[i][colonnePivo];
+                    pivo = matriceStandard[i][colonnePivo];
+                    lignePivo = i;
+                }
+                flagPositivo=1;
+            }
+        }
+    }
+    console.log("ligne pivo = " + lignePivo);
+    console.log("Value de pivo = " + pivo + "\n");
+
+    if(flagPositivo===0){ //Si toutes les colonnes résultent en une division négative
+        return 3; //CAS 3: SOLUTION ILLIMITÉE
+    }
+    
+
+    //pivoter
+    for(let i = 1; i<numContrainte+1; i++){
+        for(let j = 1; j <numVariable+(numContrainte*2)+2; j++){
+            if(lignePivo === i){
+                matriceOperation[i][j] = matriceStandard[i][j] / pivo;
+            }
+            if(lignePivo !== i){
+                matriceOperation[i][j] -=  ((matriceStandard[i][colonnePivo]/pivo) * matriceStandard[lignePivo][j]);
+            }
+        }
+    }
+    
+    //Changement de base
+    matriceOperation[lignePivo][0] = matriceOperation[0][colonnePivo];
+    vetorBase[lignePivo]=colonnePivo;
+
+    //Calcule les nouveaux CRs (couts reduits)
+    for(let colonne=1; colonne<numVariable+(numContrainte*2)+1; colonne++){
+        let CRcolonne=matriceOperation[0][colonne];
+        for(let i=1; i<numContrainte+1; i++){
+            CRcolonne-=(matriceOperation[i][colonne]*matriceOperation[i][0]);
+        }
+        matriceOperation[numContrainte+1][colonne]=CRcolonne;
+    }
+
+    //Calcule le résultat (z)
+    let z=0;
+    for(let i = 1; i < numContrainte+1; i++){
+        z += matriceOperation[i][0] * matriceOperation[i][colonneresultat];
+    }
+    matriceOperation[numContrainte+1][numVariable+(numContrainte*2)+1]=z;
+
+    //Metre à jour la matrice de base
+    for(let ligne=0; ligne<numContrainte+2; ligne++){
+        for(let colonne=0; colonne<numVariable+(numContrainte*2)+2; colonne++){
+            matriceStandard[ligne][colonne]=matriceOperation[ligne][colonne];
+        }
+    }
+
+    //Vérifie la plus petite valeur négative de la ligne COUT RÉDUIT
+    mineurNegatif=matriceStandard[numContrainte+1][1]
+    for(let j=2; j<numVariable+(numContrainte*2)+1; j++){
+        if(matriceStandard[numContrainte+1][j]<mineurNegatif){
+            mineurNegatif = matriceStandard[numContrainte+1][j];
+            colonnePivo = j;
+        }
+    }
+
+    //Vérifie s'il y a encore une variable d'excès dans la base
+    for(let i=1; i<numContrainte+1; i++){
+        if(matriceStandard[i][0]===10000) flagExcesso=1;
+    }
+
+    //Si les CR (coefficients de réduction) sont supérieurs ou égaux à zéro (condition d'arrêt)
+    if(mineurNegatif>=0){
+        if(flagExcesso===1) return 2; //CASE 2: SANS SOLUTION
+        return 1; //CASE 1: SOLUTION UNIQUE
+    }
+
+
+    return 0; 
+}
+
+
+//6. OUTPUT DU SIMPLEXE======================================================================================================================
+
+function imprimeSimplex(){
+    const divresultat = document.createElement("div");
+    let flagBase;
+
+    let resultat = matriceStandard[numContrainte+1][numVariable+(2*numContrainte)+1]
+    if(vetorObjectif[0]===1) resultat*=-1; //Si Fonction va au max -z=-resultat
+
+    //I. resultat (Z)
+    console.log("\nresultat: z = " + resultat);
+
+    const span = document.createElement('h2');
+    span.textContent = "Solution optimale";
+    divresultat.appendChild(span);
+
+    const ValueZ = document.createElement('p');
+    ValueZ.textContent = "Z = " + resultat.toFixed(4);
+    divresultat.appendChild(ValueZ);
+
+    //II. variables
+    console.log("variables:");
+
+    //Vérifie si la variable est dans la base
+    for(let i=1; i<=numVariable; i++){
+        const varFinal = document.createElement('p');
+        varFinal.className = "variavelFinal"
+        flagBase=0;
+        
+        for(let j=0; j<=numContrainte; j++){
+            if(vetorBase[j]===i){
+                flagBase=1;
+                if(j===0){
+                    console.log("X" + i + " = " + (matriceStandard[1][numVariable+(2*numContrainte)+1]).toFixed(4));
+                    varFinal.textContent = "X" + i + " = " + (matriceStandard[1][numVariable+(2*numContrainte)+1]).toFixed(4);
+                    divresultat.appendChild(varFinal);
+                }
+                else{
+                    console.log("X" + i + " = " + (matriceStandard[j][numVariable+(2*numContrainte)+1]).toFixed(4));
+                    varFinal.textContent = "X" + i + " = " + (matriceStandard[j][numVariable+(2*numContrainte)+1]).toFixed(4);
+                    divresultat.appendChild(varFinal);
+                }
+
+            }
+        }
+
+        if(flagBase===0){
+            console.log("X" + i + " = 0");
+            varFinal.textContent = "X" + i + " = " + 0;
+            divresultat.appendChild(varFinal);
+        }
+    }
+
+    document.getElementById("resultatSimplex").appendChild(divresultat);
+    document.getElementById("resultatSimplex").hidden=false;
+   
+}
+
+
+function refreshPage(){
+    numContrainte=2;
+    numVariable=2;
+    matriceStandard.length=0;
+    matriceOperation.length=0;
+    vetorBase.length=0;
+    vetorObjectif.length=0; //Bool Min/Max - Coef. variables - resultat
+    matriceContrainte.length=0; //Coef. variables - resultat - signe (*numContrainte)
+    console.clear();
+    window.location.reload();
+} 
+    </script>
+</body>
+</html>
